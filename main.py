@@ -36,8 +36,9 @@ def hello_handler(*args):
 def command_parser(raw_str: str):
     elements = raw_str.split()
     for key, value in COMMANDS.items():
-        if elements[0].lower() in value:
-            return key, elements[1:]
+        for cmd in value:
+            if cmd.startswith(elements[0]):
+                return key, elements[1:]
 
 
 COMMANDS = {
@@ -57,9 +58,10 @@ def main():
         func, data = command_parser(user_input)
         result = func(data)
         print(result)
+
         if func == exit_handler:
             break
-        if user_input == "Hello":
+        if func == hello_handler:
             print("How can i help you?")
 
 
